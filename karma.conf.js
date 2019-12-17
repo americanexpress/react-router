@@ -1,129 +1,72 @@
-const webpack = require('webpack')
-const projectName = require('./package').name
+module.exports = function(config) {
+  var configuration = {
 
-module.exports = config => {
-  if (process.env.RELEASE)
-    config.singleRun = true
+    // base path that will be used to resolve all patterns (eg. files, exclude)
+    basePath: '',
 
-  const customLaunchers = {
-    // Browsers to run on BrowserStack.
-    BS_Chrome: {
-      base: 'BrowserStack',
-      os: 'Windows',
-      os_version: '10',
-      browser: 'chrome',
-      browser_version: '47.0'
-    },
-    BS_Firefox: {
-      base: 'BrowserStack',
-      os: 'Windows',
-      os_version: '10',
-      browser: 'firefox',
-      browser_version: '43.0'
-    },
-    BS_Safari: {
-      base: 'BrowserStack',
-      os: 'OS X',
-      os_version: 'El Capitan',
-      browser: 'safari',
-      browser_version: '9.0'
-    },
-    BS_MobileSafari8: {
-      base: 'BrowserStack',
-      os: 'ios',
-      os_version: '8.3',
-      browser: 'iphone',
-      real_mobile: false
-    },
-    BS_MobileSafari9: {
-      base: 'BrowserStack',
-      os: 'ios',
-      os_version: '9.1',
-      browser: 'iphone',
-      real_mobile: false
-    },
-    BS_InternetExplorer10: {
-      base: 'BrowserStack',
-      os: 'Windows',
-      os_version: '8',
-      browser: 'ie',
-      browser_version: '10.0'
-    },
-    BS_InternetExplorer11: {
-      base: 'BrowserStack',
-      os: 'Windows',
-      os_version: '10',
-      browser: 'ie',
-      browser_version: '11.0'
-    },
+    // plugins starting with karma- are autoloaded
+    plugins: ['karma-chrome-launcher', 'karma-mocha'],
 
-    // The ancient Travis Chrome that most projects use in CI.
-    ChromeCi: {
-      base: 'Chrome',
-      flags: [ '--no-sandbox' ]
-    }
-  }
+    // frameworks to use
+    // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
+    frameworks: ['mocha'],
 
-  config.set({
-    customLaunchers: customLaunchers,
-
-    browsers: [ 'Chrome' ],
-    frameworks: [ 'mocha' ],
-    reporters: [ 'mocha', 'coverage' ],
-
+    // list of files / patterns to load in the browser
     files: [
-      'tests.webpack.js'
+      'tests.webpack.js',
     ],
 
+    // list of files to exclude
+    exclude: [
+    ],
+
+    // preprocess matching files before serving them to the browser
+    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'tests.webpack.js': [ 'webpack', 'sourcemap' ]
     },
 
-    webpack: {
-      devtool: 'cheap-module-inline-source-map',
-      module: {
-        loaders: [
-          { test: /\.js$/, exclude: /node_modules/, loader: 'babel' }
-        ]
-      },
-      plugins: [
-        new webpack.DefinePlugin({
-          'process.env.NODE_ENV': JSON.stringify('test'),
-          __DEV__: true
-        })
-      ]
-    },
+    // test results reporter to use
+    // possible values: 'dots', 'progress'
+    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
+    reporters: ['progress'],
 
-    webpackServer: {
-      noInfo: true
-    },
+    // web server port
+    port: 9876,
 
-    coverageReporter: {
-      type: 'lcov',
-      dir: 'coverage'
-    }
-  })
+    // enable / disable colors in the output (reporters and logs)
+    colors: true,
 
-  if (process.env.USE_CLOUD) {
-    config.browsers = Object.keys(customLaunchers)
-    config.reporters[0] = 'dots'
-    config.concurrency = 2
+    // level of logging
+    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
+    logLevel: config.LOG_INFO,
 
-    config.browserDisconnectTimeout = 10000
-    config.browserDisconnectTolerance = 3
+    // enable / disable watching file and executing tests whenever any file changes
+    autoWatch: true,
 
-    if (process.env.TRAVIS) {
-      config.browserStack = {
-        project: projectName,
-        build: process.env.TRAVIS_BUILD_NUMBER,
-        name: process.env.TRAVIS_JOB_NUMBER
+    // start these browsers
+    // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+    browsers: ['Chrome', 'ChromeCanary', 'Firefox', 'Opera', 'IE'],
+
+    // e.g see https://swizec.com/blog/how-to-run-javascript-tests-in-chrome-on-travis/swizec/6647
+    customLaunchers: {
+      Chrome_travis_ci: {
+        base: 'Chrome',
+        flags: ['--no-sandbox']
       }
+    },
 
-      config.singleRun = true
-    } else {
-      config.browserStack = {
-        project: projectName
-      }
-    }
+    // Continuous Integration mode
+    // if true, Karma captures browsers, runs the tests and exits
+    singleRun: false,
+
+    // Concurrency level
+    // how many browser should be started simultaneous
+    concurrency: Infinity
+  };
+
+  if (process.env.TRAVIS) {
+      configuration.browsers = ['Chrome_travis_ci'];
   }
+
+  config.set(configuration);
 }

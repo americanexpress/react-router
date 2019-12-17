@@ -10,16 +10,8 @@ jobs:
       # Create a master branch for commitlint
       # https://github.com/conventional-changelog/commitlint/issues/6
       - git remote set-branches origin master && git fetch
-      before_script:
-        - "export DISPLAY=:99.0"
-        - "sh -e /etc/init.d/xvfb start"
-        - sleep 3 # give xvfb some time to start
-        - rackup  # start a Web server
-        - sleep 3 # give Web server some time to bind to sockets, etc
-      dist: xenial
-      services:
-      - xvfb
-      script: xvfb-run make test
+      - export CHROME_BIN=chromium-browser
+      - export DISPLAY=:99.0
       deploy:
         on:
           branch: master
