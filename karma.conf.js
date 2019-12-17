@@ -21,6 +21,14 @@ module.exports = (config) => {
         }),
       ],
     },
+    webpackServer: {
+      noInfo: true
+    },
+
+    coverageReporter: {
+      type: 'lcov',
+      dir: 'coverage'
+    },
     reporters: ['progress'],
     port: 9876, // karma web server port
     colors: true,
