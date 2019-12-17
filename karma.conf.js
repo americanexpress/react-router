@@ -1,7 +1,7 @@
 module.exports = (config) => {
   config.set({
-    frameworks: ['mocha', 'chai'],
-    files: ['test/**/*.js'],
+    frameworks: [ 'mocha' ],
+    files: ['tests.webpack.js'],
     reporters: ['progress'],
     port: 9876, // karma web server port
     colors: true,
