@@ -1,10 +1,4 @@
-<h1>
-  <center>
-    <br />
-    <img src="./one-app-router.png" alt="one-app-router - One App Router" width="50%" />
-    <br /><br />
-  </center>
-</h1>
+![One App Router Header](https://github.com/americanexpress/one-app-router/raw/master/one-app-router.png)
 
 [![npm version](https://badge.fury.io/js/one-app-router.svg)](https://badge.fury.io/js/one-app-router)
 [![Build Status](https://travis-ci.org/americanexpress/one-app-router.svg?branch=master)](https://travis-ci.org/americanexpress/one-app-router)
