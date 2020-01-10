@@ -17,8 +17,15 @@ import React, { Component } from 'react'
 import { array, func, object } from 'prop-types'
 
 import getRouteParams from './getRouteParams'
-import { RouterContext as ProvidableRouterContext, contextName } from './ContextUtils'
 import { isReactChildren } from './RouteUtils'
+
+const createNamedContext = (name) => {
+  const context = React.createContext({})
+  context.displayName = name
+  return context
+}
+
+export const Context = createNamedContext('@@OneAppRouterContext')
 
 /**
  * A <RouterContext> renders the component tree for a given router state
@@ -38,33 +45,6 @@ class RouterContext extends Component {
 
   static defaultProps = {
     createElement: React.createElement
-  }
-
-  constructor(params) {
-    super(params)
-    this.listeners = []
-    this.eventIndex = 0
-  }
-
-  UNSAFE_componentWillReceiveProps() {
-    this.eventIndex++
-  }
-
-  componentDidUpdate() {
-    this.listeners.forEach(listener =>
-      listener(this.eventIndex)
-    )
-  }
-
-  subscribeKey = (listener) => {
-    // No need to immediately call listener here.
-    this.listeners.push(listener)
-
-    return () => {
-      this.listeners = this.listeners.filter(item =>
-        item !== listener
-      )
-    }
   }
 
   createElement = (component, props) => {
@@ -127,17 +107,11 @@ class RouterContext extends Component {
     )
 
     return (
-      <ProvidableRouterContext.Provider
-        value={{
-          router: this.props.router,
-          [contextName]: {
-            eventIndex: this.eventIndex,
-            subscribe: this.subscribe
-          }
-        }}
+      <Context.Provider
+        value={{ router: this.props.router }}
       >
         {element}
-      </ProvidableRouterContext.Provider>
+      </Context.Provider>
     )
   }
 }
