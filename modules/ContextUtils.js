@@ -19,18 +19,14 @@ import React, { Component } from 'react'
 // https://github.com/facebook/react/issues/2517
 // https://github.com/reactjs/react-router/issues/470
 
-export function makeContextName(name) {
-  return `@@contextSubscriber/${name}`
+const createNamedContext = (name) => {
+  const context = React.createContext({})
+  context.displayName = name
+  return context
 }
 
-export const RouterContext = React.createContext({})
-
-const contextName = makeContextName('router')
-
-// subscriber keys
-const lastRenderedEventIndexKey = `${contextName}/lastRenderedEventIndex`
-const handleContextUpdateKey = `${contextName}/handleContextUpdate`
-const unsubscribeKey = `${contextName}/unsubscribe`
+export const contextName = '@@OneAppRouterContext'
+export const RouterContext = createNamedContext(contextName)
 
 function contextHOC(Subscriber) {
   return class WrappedSubscriber extends Component {
@@ -50,7 +46,7 @@ class ContextSubscriberBase extends Component {
     const initialState = {}
 
     if(context[contextName]) {
-      initialState[lastRenderedEventIndexKey] = context[contextName].eventIndex
+      initialState.lastRenderedEventIndex = context[contextName].eventIndex
     }
 
     this.state = initialState
@@ -62,7 +58,7 @@ class ContextSubscriberBase extends Component {
     }
 
     return {
-      [lastRenderedEventIndexKey]: props.context[contextName].eventIndex
+      lastRenderedEventIndex: props.context[contextName].eventIndex
     }
   }
 
@@ -71,23 +67,23 @@ class ContextSubscriberBase extends Component {
       return
     }
 
-    this[unsubscribeKey] = this.context[contextName].subscribe(
-      this[handleContextUpdateKey]
+    this.unsubscribe = this.context[contextName].subscribe(
+      this.handleContextUpdate
     )
   }
 
   componentWillUnmount() {
-    if (!this[unsubscribeKey]) {
+    if (!this.unsubscribe) {
       return
     }
 
-    this[unsubscribeKey]()
-    this[unsubscribeKey] = null
+    this.unsubscribe()
+    this.unsubscribe = null
   }
 
-  [handleContextUpdateKey] = (eventIndex) => {
-    if (eventIndex !== this.state[lastRenderedEventIndexKey]) {
-      this.setState({ [lastRenderedEventIndexKey]: eventIndex })
+  handleContextUpdate = (eventIndex) => {
+    if (eventIndex !== this.state.lastRenderedEventIndex) {
+      this.setState({ lastRenderedEventIndex: eventIndex })
     }
   }
 }

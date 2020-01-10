@@ -17,13 +17,8 @@ import React, { Component } from 'react'
 import { array, func, object } from 'prop-types'
 
 import getRouteParams from './getRouteParams'
-import { RouterContext as ProvidableRouterContext, makeContextName } from './ContextUtils'
+import { RouterContext as ProvidableRouterContext, contextName } from './ContextUtils'
 import { isReactChildren } from './RouteUtils'
-
-const contextName = makeContextName('router')
-const listenersKey = `${contextName}/listeners`
-const eventIndexKey = `${contextName}/eventIndex`
-const subscribeKey = `${contextName}/subscribe`
 
 /**
  * A <RouterContext> renders the component tree for a given router state
@@ -45,27 +40,28 @@ class RouterContext extends Component {
     createElement: React.createElement
   }
 
-  UNSAFE_componentWillMount() {
-    this[listenersKey] = []
-    this[eventIndexKey] = 0
+  constructor(params) {
+    super(params)
+    this.listeners = []
+    this.eventIndex = 0
   }
 
   UNSAFE_componentWillReceiveProps() {
-    this[eventIndexKey]++
+    this.eventIndex++
   }
 
   componentDidUpdate() {
-    this[listenersKey].forEach(listener =>
-      listener(this[eventIndexKey])
+    this.listeners.forEach(listener =>
+      listener(this.eventIndex)
     )
   }
 
-  [subscribeKey] = (listener) => {
+  subscribeKey = (listener) => {
     // No need to immediately call listener here.
-    this[listenersKey].push(listener)
+    this.listeners.push(listener)
 
     return () => {
-      this[listenersKey] = this[listenersKey].filter(item =>
+      this.listeners = this.listeners.filter(item =>
         item !== listener
       )
     }
@@ -135,8 +131,8 @@ class RouterContext extends Component {
         value={{
           router: this.props.router,
           [contextName]: {
-            eventIndex: this[eventIndexKey],
-            subscribe: this[subscribeKey]
+            eventIndex: this.eventIndex,
+            subscribe: this.subscribe
           }
         }}
       >
