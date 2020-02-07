@@ -20,7 +20,7 @@ This project adheres to the American Express [Code of Conduct](./CODE_OF_CONDUCT
 ### Installation
 
 1. Fork the repository `one-app-router` to your GitHub account.
-2. Afterwards run the following commands in your terminal
+2. Afterwards run the following commands in your terminal to clone the repository. Review this tutorial to learn how to get started cloning the repository [https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository)
 
     ```bash
     $ git clone https://github.com/<your-github-username>/one-app-router
@@ -32,37 +32,27 @@ This project adheres to the American Express [Code of Conduct](./CODE_OF_CONDUCT
 3. Install the dependencies by running
 
     ```bash
-    $ cd npm install
+    $ npm install
     ```
 
 4. You can now run any of these scripts from the root folder.
 
 #### Running and cleaning the build files
 
-- `npm run build`
+- **`npm run build`**
 
-Runs `babel` to compile `src` files to transpiled JavaScript into `lib` using
-[`babel-preset-amex`](https://github.com/americanexpress/babel-preset-amex).
+Compiles the source files using babel.
 
 #### Running tests
 
-- `npm run lint`
+- **`npm test`**
 
-Verifies that your code matches the American Express code style defined in
-[`eslint-config-amex`](https://github.com/americanexpress/eslint-config-amex).
+Runs unit tests
 
-
-- `npm test`
-
-Runs unit tests **and** verifies the format of all commit messages on the current branch.
-
-- `npm posttest`
-
-Runs linting on the current branch and checks that the commits follow [conventional commits](https://www.conventionalcommits.org/)
 
 ## Submitting a new feature
 
-When submitting a new feature request or enhancement of an existing features please review the following:-
+When submitting a new feature request or enhancement of an existing features please review the following:
 
 ### Is your feature request related to a problem
 
@@ -105,7 +95,6 @@ If applicable, add screenshots or animated GIFs to help explain your problem.
 
 Provide the system information which is not limited to the below:
 
-- OS: [e.g. macOS, Windows]
 - Browser (if applies) [e.g. chrome, safari]
 - Version of one-app-router: [e.g. 5.0.0]
 - Node version:[e.g 10.15.1]
