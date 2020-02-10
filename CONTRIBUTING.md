@@ -47,7 +47,7 @@ Compiles the source files using babel.
 
 - **`npm test`**
 
-Runs unit tests
+Performs linting and runs node and browser tests.
 
 
 ## Submitting a new feature
