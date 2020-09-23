@@ -1,0 +1,50 @@
+name: Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ '10.x', '12.x' ]
+    name: Node ${{ matrix.node }}
+    steps:
+    - uses: actions/checkout@v2
+    - run: |
+        git remote set-branches --add origin main
+        git fetch
+        export CHROME_BIN=chromium-browser
+        export DISPLAY=:99.0
+        sh -e /etc/init.d/xvfb start
+    - name: Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node }}
+    - name: Install Dependencies
+      run: npm ci
+      env:
+        NODE_ENV: development
+    - name: Browser Tests
+      run: npm run test-browser
+      env:
+        NODE_ENV: production
+    - name: Node Tests
+      run: npm run test-node
+      env:
+        NODE_ENV: production
+    - name: Git History Test
+      run: npm run test:git-history
+      env:
+        NODE_ENV: production
+    - name: Lockfile Lint Test
+      run: npm run test:lockfile
+      env:
+        NODE_ENV: production
+    - name: Lint
+      run: npm run test:lint
+      env:
+        NODE_ENV: production
