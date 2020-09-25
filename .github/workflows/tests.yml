@@ -27,12 +27,12 @@ jobs:
       run: npm ci
       env:
         NODE_ENV: development
-    - name: Browser Tests
-      run: npm run test-browser
-      env:
-        NODE_ENV: production
     - name: Node Tests
       run: npm run test-node
+      env:
+        NODE_ENV: production
+    - name: Browser Tests
+      run: npm run test-browser
       env:
         NODE_ENV: production
     - name: Git History Test
