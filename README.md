@@ -1,9 +1,13 @@
 <h1 align="center">
+
+  [One App is now InnerSource](https://github.com/americanexpress/one-app/issues/1393)
+
+  <hr/>
+
   <img src='https://github.com/americanexpress/one-app-router/raw/main/one-app-router.png' width='50%'/>
 </h1>
 
 [![npm](https://img.shields.io/npm/v/@americanexpress/one-app-router)](https://www.npmjs.com/package/@americanexpress/one-app-router)
-[![Build Status](https://travis-ci.org/americanexpress/one-app-router.svg?branch=main)](https://travis-ci.org/americanexpress/one-app-router)
 
 > One App Router keeps your UI in sync with the URL. It has a simple API with powerful features like lazy code
 > loading, dynamic route matching, and location transition handling built right in.
@@ -20,11 +24,6 @@ Updating to the new context API would be considered a breaking change as `react-
 We will evaluate moving to `react-router@6` if it matches our use case in the future.
 
 This is not meant to be a generic standalone Routing library but one which will be tailored for use with the One ecosystem.
-
-## 👩‍💻 Hiring 👨‍💻
-
-Want to get paid for your contributions to `one-app-router`?
-> Send your resume to oneamex.careers@aexp.com
 
 ## 📖 Table of Contents
 
